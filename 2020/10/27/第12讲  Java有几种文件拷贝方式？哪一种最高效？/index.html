@@ -6,15 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2020/9 | XINING</title>
+  <title>XINING</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="第12讲 | Java有几种文件拷贝方式？哪一种最高效？">
+<meta property="og:type" content="article">
 <meta property="og:title" content="XINING">
-<meta property="og:url" content="http://example.com/archives/2020/09/index.html">
+<meta property="og:url" content="http://example.com/2020/10/27/%E7%AC%AC12%E8%AE%B2%20%20Java%E6%9C%89%E5%87%A0%E7%A7%8D%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E6%96%B9%E5%BC%8F%EF%BC%9F%E5%93%AA%E4%B8%80%E7%A7%8D%E6%9C%80%E9%AB%98%E6%95%88%EF%BC%9F/index.html">
 <meta property="og:site_name" content="XINING">
+<meta property="og:description" content="第12讲 | Java有几种文件拷贝方式？哪一种最高效？">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/a1/2f/a1115b18036f6a8edbeafeec7bc9f82f.jpg">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAABCAYAAACRz431AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAUJiyPK42JSahU0/IXcBACHxKsvwZ90DAAAAAElFTkSuQmCC">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAABCAYAAADErm6rAAAAH0lEQVQYV2N89+7dfwYoEBQUBLPev3/PgMzGJk+sHgDzgBLL5ASkuAAAAABJRU5ErkJggg==">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAABCAYAAACL8217AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PQMyGyzIwEA1MVz2kGI/qWYAAO/vMMufWuyzAAAAAElFTkSuQmCC">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAABCAYAAADXeS5fAAAAG0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAWLFAAjhDMvl3NqgAAAAAElFTkSuQmCC">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/6d/85/6d2368424431f1b0d2b935386324b585.png">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/b0/ea/b0c8226992bb97adda5ad84fe25372ea.png">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/5e/f7/5e0bf3130dffa8e56f398f0856eb76f7.png">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/52/6e/5220029e92bc21e99920937a8210276e.png">
+<meta property="article:published_time" content="2020-10-27T14:06:53.177Z">
+<meta property="article:modified_time" content="2020-10-28T01:06:43.487Z">
 <meta property="article:author" content="SongJiWang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://static001.geekbang.org/resource/image/a1/2f/a1115b18036f6a8edbeafeec7bc9f82f.jpg">
   
     <link rel="alternative" href="/atom.xml" title="XINING" type="application/atom+xml">
   
@@ -158,81 +172,300 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-第12讲  Java有几种文件拷贝方式？哪一种最高效？" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第12讲-Java有几种文件拷贝方式？哪一种最高效？"><a href="#第12讲-Java有几种文件拷贝方式？哪一种最高效？" class="headerlink" title="第12讲 | Java有几种文件拷贝方式？哪一种最高效？"></a>第12讲 | Java有几种文件拷贝方式？哪一种最高效？</h1><a id="more"></a>
+
+<p>杨晓峰 2018-05-31</p>
+<p><img src="https://static001.geekbang.org/resource/image/a1/2f/a1115b18036f6a8edbeafeec7bc9f82f.jpg" alt="img"></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAABCAYAAACRz431AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAUJiyPK42JSahU0/IXcBACHxKsvwZ90DAAAAAElFTkSuQmCC" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAABCAYAAADErm6rAAAAH0lEQVQYV2N89+7dfwYoEBQUBLPev3/PgMzGJk+sHgDzgBLL5ASkuAAAAABJRU5ErkJggg==" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAABCAYAAACL8217AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PQMyGyzIwEA1MVz2kGI/qWYAAO/vMMufWuyzAAAAAElFTkSuQmCC" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAABCAYAAADXeS5fAAAAG0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAWLFAAjhDMvl3NqgAAAAAElFTkSuQmCC" alt="img"></p>
+<p></p>
+<p>00:00</p>
+<p><a href="javascript:;">1.0x<em></em></a></p>
+<p>讲述：黄洲君 大小：5.79M 时长：12:38</p>
+<p>我在专栏上一讲提到，NIO 不止是多路复用，NIO 2 也不只是异步 IO，今天我们来看看 Java IO 体系中，其他不可忽略的部分。</p>
+<p>今天我要问你的问题是，Java 有几种文件拷贝方式？哪一种最高效？</p>
+<h2 id="典型回答"><a href="#典型回答" class="headerlink" title="典型回答"></a>典型回答</h2><p>Java 有多种比较典型的文件拷贝实现方式，比如：</p>
+<p>利用 java.io 类库，直接为源文件构建一个 FileInputStream 读取，然后再为目标文件构建一个 FileOutputStream，完成写入工作。</p>
+<p>public static void copyFileByStream(File source, File dest) throws</p>
+<p>​        IOException {</p>
+<p>​    try (InputStream is = new FileInputStream(source);</p>
+<p>​         OutputStream os = new FileOutputStream(dest);){</p>
+<p>​        byte[] buffer = new byte[1024];</p>
+<p>​        int length;</p>
+<p>​        while ((length = is.read(buffer)) &gt; 0) {</p>
+<p>​            os.write(buffer, 0, length);</p>
+<p>​        }</p>
+<p>​    }</p>
+<p> }</p>
+<p>或者，利用 java.nio 类库提供的 transferTo 或 transferFrom 方法实现。</p>
+<p>public static void copyFileByChannel(File source, File dest) throws</p>
+<p>​        IOException {</p>
+<p>​    try (FileChannel sourceChannel = new FileInputStream(source)</p>
+<p>​            .getChannel();</p>
+<p>​         FileChannel targetChannel = new FileOutputStream(dest).getChannel</p>
+<p>​                 ();){</p>
+<p>​        for (long count = sourceChannel.size() ;count&gt;0 ;) {</p>
+<p>​            long transferred = sourceChannel.transferTo(</p>
+<p>​                    sourceChannel.position(), count, targetChannel);            sourceChannel.position(sourceChannel.position() + transferred);</p>
+<p>​            count -= transferred;</p>
+<p>​        }</p>
+<p>​    }</p>
+<p> }</p>
+<p>当然，Java 标准类库本身已经提供了几种 Files.copy 的实现。</p>
+<p>对于 Copy 的效率，这个其实与操作系统和配置等情况相关，总体上来说，NIO transferTo/From 的方式<strong>可能更快</strong>，因为它更能利用现代操作系统底层机制，避免不必要拷贝和上下文切换。</p>
+<h2 id="考点分析"><a href="#考点分析" class="headerlink" title="考点分析"></a>考点分析</h2><p>今天这个问题，从面试的角度来看，确实是一个面试考察的点，针对我上面的典型回答，面试官还可能会从实践角度，或者 IO 底层实现机制等方面进一步提问。这一讲的内容从面试题出发，主要还是为了让你进一步加深对 Java IO 类库设计和实现的了解。</p>
+<p>从实践角度，我前面并没有明确说 NIO transfer 的方案一定最快，真实情况也确实未必如此。我们可以根据理论分析给出可行的推断，保持合理的怀疑，给出验证结论的思路，有时候面试官考察的就是如何将猜测变成可验证的结论，思考方式远比记住结论重要。</p>
+<p>从技术角度展开，下面这些方面值得注意：</p>
+<p>不同的 copy 方式，底层机制有什么区别？</p>
+<p>为什么零拷贝（zero-copy）可能有性能优势？</p>
+<p>Buffer 分类与使用。</p>
+<p>Direct Buffer 对垃圾收集等方面的影响与实践选择。</p>
+<p>接下来，我们一起来分析一下吧。</p>
+<h2 id="知识扩展"><a href="#知识扩展" class="headerlink" title="知识扩展"></a>知识扩展</h2><p>\1. 拷贝实现机制分析</p>
+<p>先来理解一下，前面实现的不同拷贝方法，本质上有什么明显的区别。</p>
+<p>首先，你需要理解用户态空间（User Space）和内核态空间（Kernel Space），这是操作系统层面的基本概念，操作系统内核、硬件驱动等运行在内核态空间，具有相对高的特权；而用户态空间，则是给普通应用和服务使用。你可以参考：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/User_space%E3%80%82">https://en.wikipedia.org/wiki/User_space。</a></p>
+<p>当我们使用输入输出流进行读写时，实际上是进行了多次上下文切换，比如应用读取数据时，先在内核态将数据从磁盘读取到内核缓存，再切换到用户态将数据从内核缓存读取到用户缓存。</p>
+<p>写入操作也是类似，仅仅是步骤相反，你可以参考下面这张图。</p>
+<p><img src="https://static001.geekbang.org/resource/image/6d/85/6d2368424431f1b0d2b935386324b585.png" alt="img"></p>
+<p>所以，这种方式会带来一定的额外开销，可能会降低 IO 效率。</p>
+<p>而基于 NIO transferTo 的实现方式，在 Linux 和 Unix 上，则会使用到零拷贝技术，数据传输并不需要用户态参与，省去了上下文切换的开销和不必要的内存拷贝，进而可能提高应用拷贝性能。注意，transferTo 不仅仅是可以用在文件拷贝中，与其类似的，例如读取磁盘文件，然后进行 Socket 发送，同样可以享受这种机制带来的性能和扩展性提高。</p>
+<p>transferTo 的传输过程是：</p>
+<p><img src="https://static001.geekbang.org/resource/image/b0/ea/b0c8226992bb97adda5ad84fe25372ea.png" alt="img"></p>
+<p>2.Java IO/NIO 源码结构</p>
+<p>前面我在典型回答中提了第三种方式，即 Java 标准库也提供了文件拷贝方法（java.nio.file.Files.copy）。如果你这样回答，就一定要小心了，因为很少有问题的答案是仅仅调用某个方法。从面试的角度，面试官往往会追问：既然你提到了标准库，那么它是怎么实现的呢？有的公司面试官以喜欢追问而出名，直到追问到你说不知道。</p>
+<p>其实，这个问题的答案还真不是那么直观，因为实际上有几个不同的 copy 方法。</p>
+<p>public static Path copy(Path source, Path target, CopyOption… options)</p>
+<p>​    throws IOException</p>
+<p>public static long copy(InputStream in, Path target, CopyOption… options)</p>
+<p>​    throws IOException</p>
+<p>public static long copy(Path source, OutputStream out) </p>
+<p>throws IOException</p>
+<p>可以看到，copy 不仅仅是支持文件之间操作，没有人限定输入输出流一定是针对文件的，这是两个很实用的工具方法。</p>
+<p>后面两种 copy 实现，能够在方法实现里直接看到使用的是 InputStream.transferTo()，你可以直接看源码，其内部实现其实是 stream 在用户态的读写；而对于第一种方法的分析过程要相对麻烦一些，可以参考下面片段。简单起见，我只分析同类型文件系统拷贝过程。</p>
+<p>public static Path copy(Path source, Path target, CopyOption… options)</p>
+<p>​    throws IOException</p>
+<p> {</p>
+<p>​    FileSystemProvider provider = provider(source);</p>
+<p>​    if (provider(target) == provider) {</p>
+<p>​        // same provider</p>
+<p>​        provider.copy(source, target, options);//这是本文分析的路径</p>
+<p>​    } else {</p>
+<p>​        // different providers</p>
+<p>​        CopyMoveHelper.copyToForeignTarget(source, target, options);</p>
+<p>​    }</p>
+<p>​    return target;</p>
+<p>}</p>
+<p>我把源码分析过程简单记录如下，JDK 的源代码中，内部实现和公共 API 定义也不是可以能够简单关联上的，NIO 部分代码甚至是定义为模板而不是 Java 源文件，在 build 过程自动生成源码，下面顺便介绍一下部分 JDK 代码机制和如何绕过隐藏障碍。</p>
+<p>首先，直接跟踪，发现 FileSystemProvider 只是个抽象类，阅读它的源码能够理解到，原来文件系统实际逻辑存在于 JDK 内部实现里，公共 API 其实是通过 ServiceLoader 机制加载一系列文件系统实现，然后提供服务。</p>
+<p>我们可以在 JDK 源码里搜索 FileSystemProvider 和 nio，可以定位到sun/nio/fs，我们知道 NIO 底层是和操作系统紧密相关的，所以每个平台都有自己的部分特有文件系统逻辑。</p>
+<p><img src="https://static001.geekbang.org/resource/image/5e/f7/5e0bf3130dffa8e56f398f0856eb76f7.png" alt="img"></p>
+<p>省略掉一些细节，最后我们一步步定位到 UnixFileSystemProvider  → UnixCopyFile.Transfer，发现这是个本地方法。</p>
+<p>最后，明确定位到UnixCopyFile.c，其内部实现清楚说明竟然只是简单的用户态空间拷贝！</p>
+<p>所以，我们明确这个最常见的 copy 方法其实不是利用 transferTo，而是本地技术实现的用户态拷贝。</p>
+<p>前面谈了不少机制和源码，我简单从实践角度总结一下，如何提高类似拷贝等 IO 操作的性能，有一些宽泛的原则：</p>
+<p>在程序中，使用缓存等机制，合理减少 IO 次数（在网络通信中，如 TCP 传输，window 大小也可以看作是类似思路）。</p>
+<p>使用 transferTo 等机制，减少上下文切换和额外 IO 操作。</p>
+<p>尽量减少不必要的转换过程，比如编解码；对象序列化和反序列化，比如操作文本文件或者网络通信，如果不是过程中需要使用文本信息，可以考虑不要将二进制信息转换成字符串，直接传输二进制信息。</p>
+<p>\3. 掌握 NIO Buffer</p>
+<p>我在上一讲提到 Buffer 是 NIO 操作数据的基本工具，Java 为每种原始数据类型都提供了相应的 Buffer 实现（布尔除外），所以掌握和使用 Buffer 是十分必要的，尤其是涉及 Direct  Buffer 等使用，因为其在垃圾收集等方面的特殊性，更要重点掌握。</p>
+<p><img src="https://static001.geekbang.org/resource/image/52/6e/5220029e92bc21e99920937a8210276e.png" alt="img"></p>
+<p>Buffer 有几个基本属性：</p>
+<p>capacity，它反映这个 Buffer 到底有多大，也就是数组的长度。</p>
+<p>position，要操作的数据起始位置。</p>
+<p>limit，相当于操作的限额。在读取或者写入时，limit 的意义很明显是不一样的。比如，读取操作时，很可能将 limit 设置到所容纳数据的上限；而在写入时，则会设置容量或容量以下的可写限度。</p>
+<p>mark，记录上一次 postion 的位置，默认是 0，算是一个便利性的考虑，往往不是必须的。</p>
+<p>前面三个是我们日常使用最频繁的，我简单梳理下 Buffer 的基本操作：</p>
+<p>我们创建了一个 ByteBuffer，准备放入数据，capacity 当然就是缓冲区大小，而 position 就是 0，limit 默认就是 capacity 的大小。</p>
+<p>当我们写入几个字节的数据时，position 就会跟着水涨船高，但是它不可能超过 limit 的大小。</p>
+<p>如果我们想把前面写入的数据读出来，需要调用 flip 方法，将 position 设置为 0，limit 设置为以前的 position 那里。</p>
+<p>如果还想从头再读一遍，可以调用 rewind，让 limit 不变，position 再次设置为 0。</p>
+<p>更进一步的详细使用，我建议参考相关教程。</p>
+<p>4.Direct Buffer 和垃圾收集</p>
+<p>我这里重点介绍两种特别的 Buffer。</p>
+<p>Direct Buffer：如果我们看 Buffer 的方法定义，你会发现它定义了 isDirect() 方法，返回当前 Buffer 是否是 Direct 类型。这是因为 Java 提供了堆内和堆外（Direct）Buffer，我们可以以它的 allocate 或者 allocateDirect 方法直接创建。</p>
+<p>MappedByteBuffer：它将文件按照指定大小直接映射为内存区域，当程序访问这个内存区域时将直接操作这块儿文件数据，省去了将数据从内核空间向用户空间传输的损耗。我们可以使用FileChannel.map创建 MappedByteBuffer，它本质上也是种 Direct Buffer。</p>
+<p>在实际使用中，Java 会尽量对 Direct Buffer 仅做本地 IO 操作，对于很多大数据量的 IO 密集操作，可能会带来非常大的性能优势，因为：</p>
+<p>Direct Buffer 生命周期内内存地址都不会再发生更改，进而内核可以安全地对其进行访问，很多 IO 操作会很高效。</p>
+<p>减少了堆内对象存储的可能额外维护工作，所以访问效率可能有所提高。</p>
+<p>但是请注意，Direct Buffer 创建和销毁过程中，都会比一般的堆内 Buffer 增加部分开销，所以通常都建议用于长期使用、数据较大的场景。</p>
+<p>使用 Direct Buffer，我们需要清楚它对内存和 JVM 参数的影响。首先，因为它不在堆上，所以 Xmx 之类参数，其实并不能影响 Direct Buffer 等堆外成员所使用的内存额度，我们可以使用下面参数设置大小：</p>
+<p>-XX:MaxDirectMemorySize=512M</p>
+<p>从参数设置和内存问题排查角度来看，这意味着我们在计算 Java 可以使用的内存大小的时候，不能只考虑堆的需要，还有 Direct Buffer 等一系列堆外因素。如果出现内存不足，堆外内存占用也是一种可能性。</p>
+<p>另外，大多数垃圾收集过程中，都不会主动收集 Direct Buffer，它的垃圾收集过程，就是基于我在专栏前面所介绍的 Cleaner（一个内部实现）和幻象引用（PhantomReference）机制，其本身不是 public 类型，内部实现了一个 Deallocator 负责销毁的逻辑。对它的销毁往往要拖到 full GC 的时候，所以使用不当很容易导致 OutOfMemoryError。</p>
+<p>对于 Direct Buffer 的回收，我有几个建议：</p>
+<p>在应用程序中，显式地调用 System.gc() 来强制触发。</p>
+<p>另外一种思路是，在大量使用 Direct Buffer 的部分框架中，框架会自己在程序中调用释放方法，Netty 就是这么做的，有兴趣可以参考其实现（PlatformDependent0）。</p>
+<p>重复使用 Direct Buffer。</p>
+<p>\5. 跟踪和诊断 Direct Buffer 内存占用？</p>
+<p>因为通常的垃圾收集日志等记录，并不包含 Direct Buffer 等信息，所以 Direct Buffer 内存诊断也是个比较头疼的事情。幸好，在 JDK 8 之后的版本，我们可以方便地使用 Native Memory Tracking（NMT）特性来进行诊断，你可以在程序启动时加上下面参数：</p>
+<p>-XX:NativeMemoryTracking={summary|detail}</p>
+<p>注意，激活 NMT 通常都会导致 JVM 出现 5%~10% 的性能下降，请谨慎考虑。</p>
+<p>运行时，可以采用下面命令进行交互式对比：</p>
+<p>// 打印NMT信息</p>
+<p>jcmd <pid> VM.native_memory detail </p>
+<p>// 进行baseline，以对比分配内存变化</p>
+<p>jcmd <pid> VM.native_memory baseline</p>
+<p>// 进行baseline，以对比分配内存变化</p>
+<p>jcmd <pid> VM.native_memory detail.diff</p>
+<p>我们可以在 Internal 部分发现 Direct Buffer 内存使用的信息，这是因为其底层实际是利用 unsafe_allocatememory。严格说，这不是 JVM 内部使用的内存，所以在 JDK 11 以后，其实它是归类在 other 部分里。</p>
+<p>JDK 9 的输出片段如下，“+”表示的就是 diff 命令发现的分配变化：</p>
+<p>-Internal (reserved=679KB +4KB, committed=679KB +4KB)</p>
+<p>​              (malloc=615KB +4KB #1571 +4)</p>
+<p>​              (mmap: reserved=64KB, committed=64KB)</p>
+<p><strong>注意</strong>：JVM 的堆外内存远不止 Direct Buffer，NMT 输出的信息当然也远不止这些，我在专栏后面有综合分析更加具体的内存结构的主题。</p>
+<p>今天我分析了 Java IO/NIO 底层文件操作数据的机制，以及如何实现零拷贝的高性能操作，梳理了 Buffer 的使用和类型，并针对 Direct Buffer 的生命周期管理和诊断进行了较详细的分析。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/wx.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/30/javaSE/" class="archive-article-date">
-  	<time datetime="2020-09-30T08:26:26.500Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-30</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2020/10/27/%E7%AC%AC12%E8%AE%B2%20%20Java%E6%9C%89%E5%87%A0%E7%A7%8D%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E6%96%B9%E5%BC%8F%EF%BC%9F%E5%93%AA%E4%B8%80%E7%A7%8D%E6%9C%80%E9%AB%98%E6%95%88%EF%BC%9F/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/08/%E5%8D%81%E6%9C%88%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%88%91%E6%9C%80%E7%BE%8E%E7%9A%84%E7%9B%B8%E9%81%87/" class="archive-article-date">
-  	<time datetime="2020-09-08T10:08:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-08</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/10/27/%E7%AC%AC13%E8%AE%B2%20%20%E8%B0%88%E8%B0%88%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/10/27/%E7%AC%AC11%E8%AE%B2%20%20Java%E6%8F%90%E4%BE%9B%E4%BA%86%E5%93%AA%E4%BA%9BIO%E6%96%B9%E5%BC%8F%EF%BC%9F%20NIO%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/08/%E5%8D%81%E6%9C%88%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%88%91%E6%9C%80%E7%BE%8E%E7%9A%84%E7%9B%B8%E9%81%87/">十月，你是我最美的相遇</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">top</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -258,8 +491,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

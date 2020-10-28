@@ -6,15 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2020/9 | XINING</title>
+  <title>XINING</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="第20讲 | 并发包中的ConcurrentLinkedQueue和LinkedBlockingQueue有什么区别？">
+<meta property="og:type" content="article">
 <meta property="og:title" content="XINING">
-<meta property="og:url" content="http://example.com/archives/2020/09/index.html">
+<meta property="og:url" content="http://example.com/2020/10/27/%E7%AC%AC20%E8%AE%B2%20%20%E5%B9%B6%E5%8F%91%E5%8C%85%E4%B8%AD%E7%9A%84ConcurrentLinkedQueue%E5%92%8CLinkedBlockingQueue%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/index.html">
 <meta property="og:site_name" content="XINING">
+<meta property="og:description" content="第20讲 | 并发包中的ConcurrentLinkedQueue和LinkedBlockingQueue有什么区别？">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/cb/ef/cbd181da599fbab35ce19abec597d9ef.jpg">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAABCAYAAACRz431AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAUJiyPK42JSahU0/IXcBACHxKsvwZ90DAAAAAElFTkSuQmCC">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAABCAYAAADErm6rAAAAH0lEQVQYV2N89+7dfwYoEBQUBLPev3/PgMzGJk+sHgDzgBLL5ASkuAAAAABJRU5ErkJggg==">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAABCAYAAACL8217AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PQMyGyzIwEA1MVz2kGI/qWYAAO/vMMufWuyzAAAAAElFTkSuQmCC">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAABCAYAAADXeS5fAAAAG0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAWLFAAjhDMvl3NqgAAAAAElFTkSuQmCC">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/79/79/791750d6fe7ef88ecb3897e1d029f079.png">
+<meta property="article:published_time" content="2020-10-27T14:17:07.271Z">
+<meta property="article:modified_time" content="2020-10-28T01:07:52.461Z">
 <meta property="article:author" content="SongJiWang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://static001.geekbang.org/resource/image/cb/ef/cbd181da599fbab35ce19abec597d9ef.jpg">
   
     <link rel="alternative" href="/atom.xml" title="XINING" type="application/atom+xml">
   
@@ -158,81 +169,314 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-第20讲  并发包中的ConcurrentLinkedQueue和LinkedBlockingQueue有什么区别？" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第20讲-并发包中的ConcurrentLinkedQueue和LinkedBlockingQueue有什么区别？"><a href="#第20讲-并发包中的ConcurrentLinkedQueue和LinkedBlockingQueue有什么区别？" class="headerlink" title="第20讲 | 并发包中的ConcurrentLinkedQueue和LinkedBlockingQueue有什么区别？"></a>第20讲 | 并发包中的ConcurrentLinkedQueue和LinkedBlockingQueue有什么区别？</h1><a id="more"></a>
+
+<p>杨晓峰 2018-06-21</p>
+<p><img src="https://static001.geekbang.org/resource/image/cb/ef/cbd181da599fbab35ce19abec597d9ef.jpg" alt="img"></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAABCAYAAACRz431AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAUJiyPK42JSahU0/IXcBACHxKsvwZ90DAAAAAElFTkSuQmCC" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAABCAYAAADErm6rAAAAH0lEQVQYV2N89+7dfwYoEBQUBLPev3/PgMzGJk+sHgDzgBLL5ASkuAAAAABJRU5ErkJggg==" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAABCAYAAACL8217AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PQMyGyzIwEA1MVz2kGI/qWYAAO/vMMufWuyzAAAAAElFTkSuQmCC" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAABCAYAAADXeS5fAAAAG0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAWLFAAjhDMvl3NqgAAAAAElFTkSuQmCC" alt="img"></p>
+<p></p>
+<p>00:00</p>
+<p><a href="javascript:;">1.0x<em></em></a></p>
+<p>讲述：黄洲君 大小：3.94M 时长：08:36</p>
+<p>在上一讲中，我分析了 Java 并发包中的部分内容，今天我来介绍一下线程安全队列。Java 标准库提供了非常多的线程安全队列，很容易混淆。</p>
+<p>今天我要问你的问题是，并发包中的 ConcurrentLinkedQueue 和 LinkedBlockingQueue 有什么区别？</p>
+<h2 id="典型回答"><a href="#典型回答" class="headerlink" title="典型回答"></a>典型回答</h2><p>有时候我们把并发包下面的所有容器都习惯叫作并发容器，但是严格来讲，类似 ConcurrentLinkedQueue 这种“Concurrent*”容器，才是真正代表并发。</p>
+<p>关于问题中它们的区别：</p>
+<p>Concurrent 类型基于 lock-free，在常见的多线程访问场景，一般可以提供较高吞吐量。</p>
+<p>而 LinkedBlockingQueue 内部则是基于锁，并提供了 BlockingQueue 的等待性方法。</p>
+<p>不知道你有没有注意到，java.util.concurrent 包提供的容器（Queue、List、Set）、Map，从命名上可以大概区分为 Concurrent<em>、CopyOnWrite</em>和 Blocking*等三类，同样是线程安全容器，可以简单认为：</p>
+<p>Concurrent 类型没有类似 CopyOnWrite 之类容器相对较重的修改开销。</p>
+<p>但是，凡事都是有代价的，Concurrent 往往提供了较低的遍历一致性。你可以这样理解所谓的弱一致性，例如，当利用迭代器遍历时，如果容器发生修改，迭代器仍然可以继续进行遍历。</p>
+<p>与弱一致性对应的，就是我介绍过的同步容器常见的行为“fail-fast”，也就是检测到容器在遍历过程中发生了修改，则抛出 ConcurrentModificationException，不再继续遍历。</p>
+<p>弱一致性的另外一个体现是，size 等操作准确性是有限的，未必是 100% 准确。</p>
+<p>与此同时，读取的性能具有一定的不确定性。</p>
+<h2 id="考点分析"><a href="#考点分析" class="headerlink" title="考点分析"></a>考点分析</h2><p>今天的问题是又是一个引子，考察你是否了解并发包内部不同容器实现的设计目的和实现区别。</p>
+<p>队列是非常重要的数据结构，我们日常开发中很多线程间数据传递都要依赖于它，Executor 框架提供的各种线程池，同样无法离开队列。面试官可以从不同角度考察，比如：</p>
+<p>哪些队列是有界的，哪些是无界的？（很多同学反馈了这个问题）</p>
+<p>针对特定场景需求，如何选择合适的队列实现？</p>
+<p>从源码的角度，常见的线程安全队列是如何实现的，并进行了哪些改进以提高性能表现？</p>
+<p>为了能更好地理解这一讲，需要你掌握一些基本的队列本身和数据结构方面知识，如果这方面知识比较薄弱，《数据结构与算法分析》是一本比较全面的参考书，专栏还是尽量专注于 Java 领域的特性。</p>
+<h2 id="知识扩展"><a href="#知识扩展" class="headerlink" title="知识扩展"></a>知识扩展</h2><p><strong>线程安全队列一览</strong></p>
+<p>我在专栏第 8 讲中介绍过，常见的集合中如 LinkedList 是个 Deque，只不过不是线程安全的。下面这张图是 Java 并发类库提供的各种各样的<strong>线程安全</strong>队列实现，注意，图中并未将非线程安全部分包含进来。</p>
+<p><img src="https://static001.geekbang.org/resource/image/79/79/791750d6fe7ef88ecb3897e1d029f079.png" alt="img"></p>
+<p>我们可以从不同的角度进行分类，从基本的数据结构的角度分析，有两个特别的Deque实现，ConcurrentLinkedDeque 和 LinkedBlockingDeque。Deque 的侧重点是支持对队列头尾都进行插入和删除，所以提供了特定的方法，如:</p>
+<p>尾部插入时需要的addLast(e)、offerLast(e)。</p>
+<p>尾部删除所需要的removeLast()、pollLast()。</p>
+<p>从上面这些角度，能够理解 ConcurrentLinkedDeque 和 LinkedBlockingQueue 的主要功能区别，也就足够日常开发的需要了。但是如果我们深入一些，通常会更加关注下面这些方面。</p>
+<p>从行为特征来看，绝大部分 Queue 都是实现了 BlockingQueue 接口。在常规队列操作基础上，Blocking 意味着其提供了特定的等待性操作，获取时（take）等待元素进队，或者插入时（put）等待队列出现空位。</p>
+<p> /**</p>
+<p> * 获取并移除队列头结点，如果必要，其会等待直到队列出现元素</p>
+<p>…</p>
+<p> */</p>
+<p>E take() throws InterruptedException;</p>
+<p>/**</p>
+<p> * 插入元素，如果队列已满，则等待直到队列出现空闲空间</p>
+<p>   …</p>
+<p> */</p>
+<p>void put(E e) throws InterruptedException;  </p>
+<p>另一个 BlockingQueue 经常被考察的点，就是是否有界（Bounded、Unbounded），这一点也往往会影响我们在应用开发中的选择，我这里简单总结一下。</p>
+<p>ArrayBlockingQueue 是最典型的的有界队列，其内部以 final 的数组保存数据，数组的大小就决定了队列的边界，所以我们在创建 ArrayBlockingQueue 时，都要指定容量，如</p>
+<p>public ArrayBlockingQueue(int capacity, boolean fair)</p>
+<p>LinkedBlockingQueue，容易被误解为无边界，但其实其行为和内部代码都是基于有界的逻辑实现的，只不过如果我们没有在创建队列时就指定容量，那么其容量限制就自动被设置为 Integer.MAX_VALUE，成为了无界队列。</p>
+<p>SynchronousQueue，这是一个非常奇葩的队列实现，每个删除操作都要等待插入操作，反之每个插入操作也都要等待删除动作。那么这个队列的容量是多少呢？是 1 吗？其实不是的，其内部容量是 0。</p>
+<p>PriorityBlockingQueue 是无边界的优先队列，虽然严格意义上来讲，其大小总归是要受系统资源影响。</p>
+<p>DelayedQueue 和 LinkedTransferQueue 同样是无边界的队列。对于无边界的队列，有一个自然的结果，就是 put 操作永远也不会发生其他 BlockingQueue 的那种等待情况。</p>
+<p>如果我们分析不同队列的底层实现，BlockingQueue 基本都是基于锁实现，一起来看看典型的 LinkedBlockingQueue。</p>
+<p>/** Lock held by take, poll, etc */</p>
+<p>private final ReentrantLock takeLock = new ReentrantLock();</p>
+<p>/** Wait queue for waiting takes */</p>
+<p>private final Condition notEmpty = takeLock.newCondition();</p>
+<p>/** Lock held by put, offer, etc */</p>
+<p>private final ReentrantLock putLock = new ReentrantLock();</p>
+<p>/** Wait queue for waiting puts */</p>
+<p>private final Condition notFull = putLock.newCondition();</p>
+<p>我在介绍 ReentrantLock 的条件变量用法的时候分析过 ArrayBlockingQueue，不知道你有没有注意到，其条件变量与 LinkedBlockingQueue 版本的实现是有区别的。notEmpty、notFull 都是同一个再入锁的条件变量，而 LinkedBlockingQueue 则改进了锁操作的粒度，头、尾操作使用不同的锁，所以在通用场景下，它的吞吐量相对要更好一些。</p>
+<p>下面的 take 方法与 ArrayBlockingQueue 中的实现，也是有不同的，由于其内部结构是链表，需要自己维护元素数量值，请参考下面的代码。</p>
+<p>public E take() throws InterruptedException {</p>
+<p>​    final E x;</p>
+<p>​    final int c;</p>
+<p>​    final AtomicInteger count = this.count;</p>
+<p>​    final ReentrantLock takeLock = this.takeLock;</p>
+<p>​    takeLock.lockInterruptibly();</p>
+<p>​    try {</p>
+<p>​        while (count.get() == 0) {</p>
+<p>​            notEmpty.await();</p>
+<p>​        }</p>
+<p>​        x = dequeue();</p>
+<p>​        c = count.getAndDecrement();</p>
+<p>​        if (c &gt; 1)</p>
+<p>​            notEmpty.signal();</p>
+<p>​    } finally {</p>
+<p>​        takeLock.unlock();</p>
+<p>​    }</p>
+<p>​    if (c == capacity)</p>
+<p>​        signalNotFull();</p>
+<p>​    return x;</p>
+<p>}</p>
+<p>类似 ConcurrentLinkedQueue 等，则是基于 CAS 的无锁技术，不需要在每个操作时使用锁，所以扩展性表现要更加优异。</p>
+<p>相对比较另类的 SynchronousQueue，在 Java 6 中，其实现发生了非常大的变化，利用 CAS 替换掉了原本基于锁的逻辑，同步开销比较小。它是 Executors.newCachedThreadPool() 的默认队列。</p>
+<p><strong>队列使用场景与典型用例</strong></p>
+<p>在实际开发中，我提到过 Queue 被广泛使用在生产者 - 消费者场景，比如利用 BlockingQueue 来实现，由于其提供的等待机制，我们可以少操心很多协调工作，你可以参考下面样例代码：</p>
+<p>import java.util.concurrent.ArrayBlockingQueue;</p>
+<p>import java.util.concurrent.BlockingQueue;</p>
+<p>public class ConsumerProducer {</p>
+<p>​    public static final String EXIT_MSG  = “Good bye!”;</p>
+<p>​    public static void main(String[] args) {</p>
+<p>// 使用较小的队列，以更好地在输出中展示其影响</p>
+<p>​        BlockingQueue<String> queue = new ArrayBlockingQueue&lt;&gt;(3);</p>
+<p>​        Producer producer = new Producer(queue);</p>
+<p>​        Consumer consumer = new Consumer(queue);</p>
+<p>​        new Thread(producer).start();</p>
+<p>​        new Thread(consumer).start();</p>
+<p>​    }</p>
+<p>​    static class Producer implements Runnable {</p>
+<p>​        private BlockingQueue<String> queue;</p>
+<p>​        public Producer(BlockingQueue<String> q) {</p>
+<p>​            this.queue = q;</p>
+<p>​        }</p>
+<p>​        @Override</p>
+<p>​        public void run() {</p>
+<p>​            for (int i = 0; i &lt; 20; i++) {</p>
+<p>​                try{</p>
+<p>​                    Thread.sleep(5L);</p>
+<p>​                    String msg = “Message” + i;</p>
+<p>​                    System.out.println(“Produced new item: “ + msg);</p>
+<p>​                    queue.put(msg);</p>
+<p>​                } catch (InterruptedException e) {</p>
+<p>​                    e.printStackTrace();</p>
+<p>​                }</p>
+<p>​            }</p>
+<p>​            try {</p>
+<p>​                System.out.println(“Time to say good bye!”);</p>
+<p>​                queue.put(EXIT_MSG);</p>
+<p>​            } catch (InterruptedException e) {</p>
+<p>​                e.printStackTrace();</p>
+<p>​            }</p>
+<p>​        }</p>
+<p>​    }</p>
+<p>​    static class Consumer implements Runnable{</p>
+<p>​        private BlockingQueue<String> queue;</p>
+<p>​        public Consumer(BlockingQueue<String> q){</p>
+<p>​            this.queue=q;</p>
+<p>​        }</p>
+<p>​        @Override</p>
+<p>​        public void run() {</p>
+<p>​            try{</p>
+<p>​                String msg;</p>
+<p>​                while(!EXIT_MSG.equalsIgnoreCase( (msg = queue.take()))){</p>
+<p>​                    System.out.println(“Consumed item: “ + msg);</p>
+<p>​                    Thread.sleep(10L);</p>
+<p>​                }</p>
+<p>​                System.out.println(“Got exit message, bye!”);</p>
+<p>​            }catch(InterruptedException e) {</p>
+<p>​                e.printStackTrace();</p>
+<p>​            }</p>
+<p>​        }</p>
+<p>​    }</p>
+<p>}</p>
+<p>上面是一个典型的生产者 - 消费者样例，如果使用非 Blocking 的队列，那么我们就要自己去实现轮询、条件判断（如检查 poll 返回值是否 null）等逻辑，如果没有特别的场景要求，Blocking 实现起来代码更加简单、直观。</p>
+<p>前面介绍了各种队列实现，在日常的应用开发中，如何进行选择呢？</p>
+<p>以 LinkedBlockingQueue、ArrayBlockingQueue 和 SynchronousQueue 为例，我们一起来分析一下，根据需求可以从很多方面考量：</p>
+<p>考虑应用场景中对队列边界的要求。ArrayBlockingQueue 是有明确的容量限制的，而 LinkedBlockingQueue 则取决于我们是否在创建时指定，SynchronousQueue 则干脆不能缓存任何元素。</p>
+<p>从空间利用角度，数组结构的 ArrayBlockingQueue 要比 LinkedBlockingQueue 紧凑，因为其不需要创建所谓节点，但是其初始分配阶段就需要一段连续的空间，所以初始内存需求更大。</p>
+<p>通用场景中，LinkedBlockingQueue 的吞吐量一般优于 ArrayBlockingQueue，因为它实现了更加细粒度的锁操作。</p>
+<p>ArrayBlockingQueue 实现比较简单，性能更好预测，属于表现稳定的“选手”。</p>
+<p>如果我们需要实现的是两个线程之间接力性（handoff）的场景，按照专栏上一讲的例子，你可能会选择 CountDownLatch，但是SynchronousQueue也是完美符合这种场景的，而且线程间协调和数据传输统一起来，代码更加规范。</p>
+<p>可能令人意外的是，很多时候 SynchronousQueue 的性能表现，往往大大超过其他实现，尤其是在队列元素较小的场景。</p>
+<p>今天我分析了 Java 中让人眼花缭乱的各种线程安全队列，试图从几个角度，让每个队列的特点更加明确，进而希望减少你在日常工作中使用时的困扰。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/wx.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/30/javaSE/" class="archive-article-date">
-  	<time datetime="2020-09-30T08:26:26.500Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-30</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2020/10/27/%E7%AC%AC20%E8%AE%B2%20%20%E5%B9%B6%E5%8F%91%E5%8C%85%E4%B8%AD%E7%9A%84ConcurrentLinkedQueue%E5%92%8CLinkedBlockingQueue%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/08/%E5%8D%81%E6%9C%88%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%88%91%E6%9C%80%E7%BE%8E%E7%9A%84%E7%9B%B8%E9%81%87/" class="archive-article-date">
-  	<time datetime="2020-09-08T10:08:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-08</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/10/27/%E7%AC%AC21%E8%AE%B2%20%20Java%E5%B9%B6%E5%8F%91%E7%B1%BB%E5%BA%93%E6%8F%90%E4%BE%9B%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%EF%BC%9F%20%E5%88%86%E5%88%AB%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9%EF%BC%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/10/27/%E7%AC%AC19%E8%AE%B2%20%20Java%E5%B9%B6%E5%8F%91%E5%8C%85%E6%8F%90%E4%BE%9B%E4%BA%86%E5%93%AA%E4%BA%9B%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/08/%E5%8D%81%E6%9C%88%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%88%91%E6%9C%80%E7%BE%8E%E7%9A%84%E7%9B%B8%E9%81%87/">十月，你是我最美的相遇</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">top</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -258,8 +502,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

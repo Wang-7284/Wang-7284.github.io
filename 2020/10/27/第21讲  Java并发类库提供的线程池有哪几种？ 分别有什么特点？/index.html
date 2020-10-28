@@ -6,15 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2020/9 | XINING</title>
+  <title>XINING</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="第21讲 | Java并发类库提供的线程池有哪几种？ 分别有什么特点？">
+<meta property="og:type" content="article">
 <meta property="og:title" content="XINING">
-<meta property="og:url" content="http://example.com/archives/2020/09/index.html">
+<meta property="og:url" content="http://example.com/2020/10/27/%E7%AC%AC21%E8%AE%B2%20%20Java%E5%B9%B6%E5%8F%91%E7%B1%BB%E5%BA%93%E6%8F%90%E4%BE%9B%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%EF%BC%9F%20%E5%88%86%E5%88%AB%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9%EF%BC%9F/index.html">
 <meta property="og:site_name" content="XINING">
+<meta property="og:description" content="第21讲 | Java并发类库提供的线程池有哪几种？ 分别有什么特点？">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/e5/15/e584bcd418baf7ff0da115a26cf21d15.jpg">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAABCAYAAACRz431AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAUJiyPK42JSahU0/IXcBACHxKsvwZ90DAAAAAElFTkSuQmCC">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAABCAYAAADErm6rAAAAH0lEQVQYV2N89+7dfwYoEBQUBLPev3/PgMzGJk+sHgDzgBLL5ASkuAAAAABJRU5ErkJggg==">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAABCAYAAACL8217AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PQMyGyzIwEA1MVz2kGI/qWYAAO/vMMufWuyzAAAAAElFTkSuQmCC">
+<meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAABCAYAAADXeS5fAAAAG0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAWLFAAjhDMvl3NqgAAAAAElFTkSuQmCC">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/fc/5b/fc70c37867c7fbfb672fa3e37fe14b5b.png">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/18/65/18b64aee22c67f488171a73133e4d465.png">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/c5/a1/c50ce5f2ff4ae723c6267185699ccda1.png">
+<meta property="article:published_time" content="2020-10-27T14:17:42.200Z">
+<meta property="article:modified_time" content="2020-10-28T01:07:57.820Z">
 <meta property="article:author" content="SongJiWang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://static001.geekbang.org/resource/image/e5/15/e584bcd418baf7ff0da115a26cf21d15.jpg">
   
     <link rel="alternative" href="/atom.xml" title="XINING" type="application/atom+xml">
   
@@ -158,81 +171,275 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-第21讲  Java并发类库提供的线程池有哪几种？ 分别有什么特点？" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第21讲-Java并发类库提供的线程池有哪几种？-分别有什么特点？"><a href="#第21讲-Java并发类库提供的线程池有哪几种？-分别有什么特点？" class="headerlink" title="第21讲 | Java并发类库提供的线程池有哪几种？ 分别有什么特点？"></a>第21讲 | Java并发类库提供的线程池有哪几种？ 分别有什么特点？</h1><a id="more"></a>
+
+<p>杨晓峰 2018-06-23</p>
+<p><img src="https://static001.geekbang.org/resource/image/e5/15/e584bcd418baf7ff0da115a26cf21d15.jpg" alt="img"></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAABCAYAAACRz431AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAUJiyPK42JSahU0/IXcBACHxKsvwZ90DAAAAAElFTkSuQmCC" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAABCAYAAADErm6rAAAAH0lEQVQYV2N89+7dfwYoEBQUBLPev3/PgMzGJk+sHgDzgBLL5ASkuAAAAABJRU5ErkJggg==" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAABCAYAAACL8217AAAAJ0lEQVQYV2N89+7df0FBQQYQeP/+PQMyGyzIwEA1MVz2kGI/qWYAAO/vMMufWuyzAAAAAElFTkSuQmCC" alt="img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAABCAYAAADXeS5fAAAAG0lEQVQYV2N89+7df0FBQQYQeP/+PZgGAWLFAAjhDMvl3NqgAAAAAElFTkSuQmCC" alt="img"></p>
+<p></p>
+<p>00:00</p>
+<p><a href="javascript:;">1.0x<em></em></a></p>
+<p>讲述：黄洲君 大小：5.73M 时长：12:30</p>
+<p>我在专栏第 17 讲中介绍过线程是不能够重复启动的，创建或销毁线程存在一定的开销，所以利用线程池技术来提高系统资源利用效率，并简化线程管理，已经是非常成熟的选择。</p>
+<p>今天我要问你的问题是，Java 并发类库提供的线程池有哪几种？ 分别有什么特点？</p>
+<h2 id="典型回答"><a href="#典型回答" class="headerlink" title="典型回答"></a>典型回答</h2><p>通常开发者都是利用 Executors 提供的通用线程池创建方法，去创建不同配置的线程池，主要区别在于不同的 ExecutorService 类型或者不同的初始参数。</p>
+<p>Executors 目前提供了 5 种不同的线程池创建配置：</p>
+<p>newCachedThreadPool()，它是一种用来处理大量短时间工作任务的线程池，具有几个鲜明特点：它会试图缓存线程并重用，当无缓存线程可用时，就会创建新的工作线程；如果线程闲置的时间超过 60 秒，则被终止并移出缓存；长时间闲置时，这种线程池，不会消耗什么资源。其内部使用 SynchronousQueue 作为工作队列。</p>
+<p>newFixedThreadPool(int nThreads)，重用指定数目（nThreads）的线程，其背后使用的是无界的工作队列，任何时候最多有 nThreads 个工作线程是活动的。这意味着，如果任务数量超过了活动队列数目，将在工作队列中等待空闲线程出现；如果有工作线程退出，将会有新的工作线程被创建，以补足指定的数目 nThreads。</p>
+<p>newSingleThreadExecutor()，它的特点在于工作线程数目被限制为 1，操作一个无界的工作队列，所以它保证了所有任务的都是被顺序执行，最多会有一个任务处于活动状态，并且不允许使用者改动线程池实例，因此可以避免其改变线程数目。</p>
+<p>newSingleThreadScheduledExecutor() 和 newScheduledThreadPool(int corePoolSize)，创建的是个 ScheduledExecutorService，可以进行定时或周期性的工作调度，区别在于单一工作线程还是多个工作线程。</p>
+<p>newWorkStealingPool(int parallelism)，这是一个经常被人忽略的线程池，Java 8 才加入这个创建方法，其内部会构建ForkJoinPool，利用Work-Stealing算法，并行地处理任务，不保证处理顺序。</p>
+<h2 id="考点分析"><a href="#考点分析" class="headerlink" title="考点分析"></a>考点分析</h2><p>Java 并发包中的 Executor 框架无疑是并发编程中的重点，今天的题目考察的是对几种标准线程池的了解，我提供的是一个针对最常见的应用方式的回答。</p>
+<p>在大多数应用场景下，使用 Executors 提供的 5 个静态工厂方法就足够了，但是仍然可能需要直接利用 ThreadPoolExecutor 等构造函数创建，这就要求你对线程构造方式有进一步的了解，你需要明白线程池的设计和结构。</p>
+<p>另外，线程池这个定义就是个容易让人误解的术语，因为 ExecutorService 除了通常意义上“池”的功能，还提供了更全面的线程管理、任务提交等方法。</p>
+<p>Executor 框架可不仅仅是线程池，我觉得至少下面几点值得深入学习：</p>
+<p>掌握 Executor 框架的主要内容，至少要了解组成与职责，掌握基本开发用例中的使用。</p>
+<p>对线程池和相关并发工具类型的理解，甚至是源码层面的掌握。</p>
+<p>实践中有哪些常见问题，基本的诊断思路是怎样的。</p>
+<p>如何根据自身应用特点合理使用线程池。</p>
+<h2 id="知识扩展"><a href="#知识扩展" class="headerlink" title="知识扩展"></a>知识扩展</h2><p>首先，我们来看看 Executor 框架的基本组成，请参考下面的类图。</p>
+<p><img src="https://static001.geekbang.org/resource/image/fc/5b/fc70c37867c7fbfb672fa3e37fe14b5b.png" alt="img"></p>
+<p>我们从整体上把握一下各个类型的主要设计目的：</p>
+<p>Executor 是一个基础的接口，其初衷是将任务提交和任务执行细节解耦，这一点可以体会其定义的唯一方法。</p>
+<p>void execute(Runnable command);</p>
+<p>Executor 的设计是源于 Java 早期线程 API 使用的教训，开发者在实现应用逻辑时，被太多线程创建、调度等不相关细节所打扰。就像我们进行 HTTP 通信，如果还需要自己操作 TCP 握手，开发效率低下，质量也难以保证。</p>
+<p>ExecutorService 则更加完善，不仅提供 service 的管理功能，比如 shutdown 等方法，也提供了更加全面的提交任务机制，如返回Future而不是 void 的 submit 方法。</p>
+<p><T> Future<T> submit(Callable<T> task);</p>
+<p>注意，这个例子输入的可是Callable，它解决了 Runnable 无法返回结果的困扰。</p>
+<p>Java 标准类库提供了几种基础实现，比如ThreadPoolExecutor、ScheduledThreadPoolExecutor、ForkJoinPool。这些线程池的设计特点在于其高度的可调节性和灵活性，以尽量满足复杂多变的实际应用场景，我会进一步分析其构建部分的源码，剖析这种灵活性的源头。</p>
+<p>Executors 则从简化使用的角度，为我们提供了各种方便的静态工厂方法。</p>
+<p>下面我就从源码角度，分析线程池的设计与实现，我将主要围绕最基础的 ThreadPoolExecutor 源码。ScheduledThreadPoolExecutor 是 ThreadPoolExecutor 的扩展，主要是增加了调度逻辑，如想深入了解，你可以参考相关教程。而 ForkJoinPool 则是为 ForkJoinTask 定制的线程池，与通常意义的线程池有所不同。</p>
+<p>这部分内容比较晦涩，罗列概念也不利于你去理解，所以我会配合一些示意图来说明。在现实应用中，理解应用与线程池的交互和线程池的内部工作过程，你可以参考下图。</p>
+<p><img src="https://static001.geekbang.org/resource/image/18/65/18b64aee22c67f488171a73133e4d465.png" alt="img"></p>
+<p>简单理解一下：</p>
+<p>工作队列负责存储用户提交的各个任务，这个工作队列，可以是容量为 0 的 SynchronousQueue（使用 newCachedThreadPool），也可以是像固定大小线程池（newFixedThreadPool）那样使用 LinkedBlockingQueue。</p>
+<p>private final BlockingQueue<Runnable> workQueue;</p>
+<p>内部的“线程池”，这是指保持工作线程的集合，线程池需要在运行过程中管理线程创建、销毁。例如，对于带缓存的线程池，当任务压力较大时，线程池会创建新的工作线程；当业务压力退去，线程池会在闲置一段时间（默认 60 秒）后结束线程。</p>
+<p>private final HashSet<Worker> workers = new HashSet&lt;&gt;();</p>
+<p>线程池的工作线程被抽象为静态内部类 Worker，基于AQS实现。</p>
+<p>ThreadFactory 提供上面所需要的创建线程逻辑。</p>
+<p>如果任务提交时被拒绝，比如线程池已经处于 SHUTDOWN 状态，需要为其提供处理逻辑，Java 标准库提供了类似ThreadPoolExecutor.AbortPolicy等默认实现，也可以按照实际需求自定义。</p>
+<p>从上面的分析，就可以看出线程池的几个基本组成部分，一起都体现在线程池的构造函数中，从字面我们就可以大概猜测到其用意：</p>
+<p>corePoolSize，所谓的核心线程数，可以大致理解为长期驻留的线程数目（除非设置了 allowCoreThreadTimeOut）。对于不同的线程池，这个值可能会有很大区别，比如 newFixedThreadPool 会将其设置为 nThreads，而对于 newCachedThreadPool 则是为 0。</p>
+<p>maximumPoolSize，顾名思义，就是线程不够时能够创建的最大线程数。同样进行对比，对于 newFixedThreadPool，当然就是 nThreads，因为其要求是固定大小，而 newCachedThreadPool 则是 Integer.MAX_VALUE。</p>
+<p>keepAliveTime 和 TimeUnit，这两个参数指定了额外的线程能够闲置多久，显然有些线程池不需要它。</p>
+<p>workQueue，工作队列，必须是 BlockingQueue。</p>
+<p>通过配置不同的参数，我们就可以创建出行为大相径庭的线程池，这就是线程池高度灵活性的基础。</p>
+<p>public ThreadPoolExecutor(int corePoolSize,</p>
+<p>​                        int maximumPoolSize,</p>
+<p>​                        long keepAliveTime,</p>
+<p>​                        TimeUnit unit,</p>
+<p>​                        BlockingQueue<Runnable> workQueue,</p>
+<p>​                        ThreadFactory threadFactory,</p>
+<p>​                        RejectedExecutionHandler handler)</p>
+<p>进一步分析，线程池既然有生命周期，它的状态是如何表征的呢？</p>
+<p>这里有一个非常有意思的设计，ctl 变量被赋予了双重角色，通过高低位的不同，既表示线程池状态，又表示工作线程数目，这是一个典型的高效优化。试想，实际系统中，虽然我们可以指定线程极限为 Integer.MAX_VALUE，但是因为资源限制，这只是个理论值，所以完全可以将空闲位赋予其他意义。</p>
+<p>private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));</p>
+<p>// 真正决定了工作线程数的理论上限 </p>
+<p>private static final int COUNT_BITS = Integer.SIZE - 3;</p>
+<p>private static final int COUNT_MASK = (1 &lt;&lt; COUNT_BITS) - 1;</p>
+<p>// 线程池状态，存储在数字的高位</p>
+<p>private static final int RUNNING = -1 &lt;&lt; COUNT_BITS;</p>
+<p>…</p>
+<p>// Packing and unpacking ctl</p>
+<p>private static int runStateOf(int c)  { return c &amp; ~COUNT_MASK; }</p>
+<p>private static int workerCountOf(int c)  { return c &amp; COUNT_MASK; }</p>
+<p>private static int ctlOf(int rs, int wc) { return rs | wc; }</p>
+<p>为了让你能对线程生命周期有个更加清晰的印象，我这里画了一个简单的状态流转图，对线程池的可能状态和其内部方法之间进行了对应，如果有不理解的方法，请参考 Javadoc。<strong>注意</strong>，实际 Java 代码中并不存在所谓 Idle 状态，我添加它仅仅是便于理解。</p>
+<p><img src="https://static001.geekbang.org/resource/image/c5/a1/c50ce5f2ff4ae723c6267185699ccda1.png" alt="img"></p>
+<p>前面都是对线程池属性和构建等方面的分析，下面我选择典型的 execute 方法，来看看其是如何工作的，具体逻辑请参考我添加的注释，配合代码更加容易理解。</p>
+<p>public void execute(Runnable command) {</p>
+<p>…</p>
+<p>  int c = ctl.get();</p>
+<p>// 检查工作线程数目，低于corePoolSize则添加Worker</p>
+<p>  if (workerCountOf(c) &lt; corePoolSize) {</p>
+<p>​      if (addWorker(command, true))</p>
+<p>​          return;</p>
+<p>​      c = ctl.get();</p>
+<p>  }</p>
+<p>// isRunning就是检查线程池是否被shutdown</p>
+<p>// 工作队列可能是有界的，offer是比较友好的入队方式</p>
+<p>  if (isRunning(c) &amp;&amp; workQueue.offer(command)) {</p>
+<p>​      int recheck = ctl.get();</p>
+<p>// 再次进行防御性检查</p>
+<p>​      if (! isRunning(recheck) &amp;&amp; remove(command))</p>
+<p>​          reject(command);</p>
+<p>​      else if (workerCountOf(recheck) == 0)</p>
+<p>​          addWorker(null, false);</p>
+<p>  }</p>
+<p>// 尝试添加一个worker，如果失败意味着已经饱和或者被shutdown了</p>
+<p>  else if (!addWorker(command, false))</p>
+<p>​      reject(command);</p>
+<p>}</p>
+<p><strong>线程池实践</strong></p>
+<p>线程池虽然为提供了非常强大、方便的功能，但是也不是银弹，使用不当同样会导致问题。我这里介绍些典型情况，经过前面的分析，很多方面可以自然的推导出来。</p>
+<p>避免任务堆积。前面我说过 newFixedThreadPool 是创建指定数目的线程，但是其工作队列是无界的，如果工作线程数目太少，导致处理跟不上入队的速度，这就很有可能占用大量系统内存，甚至是出现 OOM。诊断时，你可以使用 jmap 之类的工具，查看是否有大量的任务对象入队。</p>
+<p>避免过度扩展线程。我们通常在处理大量短时任务时，使用缓存的线程池，比如在最新的 HTTP/2 client API 中，目前的默认实现就是如此。我们在创建线程池的时候，并不能准确预计任务压力有多大、数据特征是什么样子（大部分请求是 1K 、100K 还是 1M 以上？），所以很难明确设定一个线程数目。</p>
+<p>另外，如果线程数目不断增长（可以使用 jstack 等工具检查），也需要警惕另外一种可能性，就是线程泄漏，这种情况往往是因为任务逻辑有问题，导致工作线程迟迟不能被释放。建议你排查下线程栈，很有可能多个线程都是卡在近似的代码处。</p>
+<p>避免死锁等同步问题，对于死锁的场景和排查，你可以复习专栏第 18 讲。</p>
+<p>尽量避免在使用线程池时操作 ThreadLocal，同样是专栏第 17 讲已经分析过的，通过今天的线程池学习，应该更能理解其原因，工作线程的生命周期通常都会超过任务的生命周期。</p>
+<p><strong>线程池大小的选择策略</strong></p>
+<p>上面我已经介绍过，线程池大小不合适，太多或太少，都会导致麻烦，所以我们需要去考虑一个合适的线程池大小。虽然不能完全确定，但是有一些相对普适的规则和思路。</p>
+<p>如果我们的任务主要是进行计算，那么就意味着 CPU 的处理能力是稀缺的资源，我们能够通过大量增加线程数提高计算能力吗？往往是不能的，如果线程太多，反倒可能导致大量的上下文切换开销。所以，这种情况下，通常建议按照 CPU 核的数目 N 或者 N+1。</p>
+<p>如果是需要较多等待的任务，例如 I/O 操作比较多，可以参考 Brain Goetz 推荐的计算方法：</p>
+<p>线程数 = CPU核数 × 目标CPU利用率 ×（1 + 平均等待时间/平均工作时间）</p>
+<p>这些时间并不能精准预计，需要根据采样或者概要分析等方式进行计算，然后在实际中验证和调整。</p>
+<p>上面是仅仅考虑了 CPU 等限制，实际还可能受各种系统资源限制影响，例如我最近就在 Mac OS X 上遇到了大负载时ephemeral 端口受限的情况。当然，我是通过扩大可用端口范围解决的，如果我们不能调整资源的容量，那么就只能限制工作线程的数目了。这里的资源可以是文件句柄、内存等。</p>
+<p>另外，在实际工作中，不要把解决问题的思路全部指望到调整线程池上，很多时候架构上的改变更能解决问题，比如利用背压机制的Reactive Stream、合理的拆分等。</p>
+<p>今天，我从 Java 创建的几种线程池开始，对 Executor 框架的主要组成、线程池结构与生命周期等方面进行了讲解和分析，希望对你有所帮助。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/wx.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/30/javaSE/" class="archive-article-date">
-  	<time datetime="2020-09-30T08:26:26.500Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-30</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2020/10/27/%E7%AC%AC21%E8%AE%B2%20%20Java%E5%B9%B6%E5%8F%91%E7%B1%BB%E5%BA%93%E6%8F%90%E4%BE%9B%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%EF%BC%9F%20%E5%88%86%E5%88%AB%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9%EF%BC%9F/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/08/%E5%8D%81%E6%9C%88%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%88%91%E6%9C%80%E7%BE%8E%E7%9A%84%E7%9B%B8%E9%81%87/" class="archive-article-date">
-  	<time datetime="2020-09-08T10:08:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-08</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/10/27/%E7%AC%AC22%E8%AE%B2%20%20AtomicInteger%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E5%A6%82%E4%BD%95%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E4%BA%A7%E5%93%81%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%BA%94%E7%94%A8CAS%E6%93%8D%E4%BD%9C%EF%BC%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/10/27/%E7%AC%AC20%E8%AE%B2%20%20%E5%B9%B6%E5%8F%91%E5%8C%85%E4%B8%AD%E7%9A%84ConcurrentLinkedQueue%E5%92%8CLinkedBlockingQueue%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/08/%E5%8D%81%E6%9C%88%EF%BC%8C%E4%BD%A0%E6%98%AF%E6%88%91%E6%9C%80%E7%BE%8E%E7%9A%84%E7%9B%B8%E9%81%87/">十月，你是我最美的相遇</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">top</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -258,8 +465,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
